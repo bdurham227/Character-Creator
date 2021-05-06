@@ -3,12 +3,34 @@ const Account = require('./Account');
 const Character = require('./Character');
 
 User.hasMany(Account,{
-    foreignKey: 'gamer_id',
+   
     onDelete: 'cascade',
 });
 Account.belongsTo(User, {
-    foreignKey: 'gamer_id',
+   
     onDelete: 'cascade',
+});
+
+
+Account.hasMany(Character, {
+    foreignKey: 'account_id',
+    onDelete: 'cascade',
+});
+
+
+Character.belongsTo(Account, {
+    foreignKey: 'account_id',
+    onDelete: 'cascade',
+});
+
+
+
+
+User.belongsToMany(Account, {
+    through: {
+        model: Character,
+    },
+    foreignKey: 'user_id'
 });
 
 Account.belongsToMany(User, {
@@ -17,12 +39,7 @@ Account.belongsToMany(User, {
     },
     foreignKey: 'account_id',
 });
-User.belongsToMany(Account, {
-    through: {
-        model: Character,
-    },
-    foreignKey: 'user_id'
-});
+
 
 module.exports = {
     User,
